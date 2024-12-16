@@ -5,11 +5,10 @@ from scipy.optimize import minimize
 
 
 def predict():
-    # Считываем путь из файла temp.txt
     with open('temp.txt', 'r') as file:
-        file_path = file.read().strip()  # Читаем путь и убираем лишние пробелы
+        file_path = file.read().strip()
 
-    # Загружаем данные из CSV по пути из temp.txt
+
     df = pd.read_csv(file_path)
 
     with open('diamondmodel.pkl', 'rb') as f:
@@ -28,11 +27,11 @@ def valuepredict(target_price):
     def cost_function(X_input):
         columns = ['Feature1', 'Feature2', 'Feature3', 'Feature4', 'Feature5', 'Feature6']
 
-        # Считываем путь из файла temp.txt
-        with open('temp.txt', 'r') as file:
-            file_path = file.read().strip()  # Читаем путь и убираем лишние пробелы
 
-        # Создаем временный DataFrame и сохраняем его по пути
+        with open('temp.txt', 'r') as file:
+            file_path = file.read().strip()
+
+
         df_temp = pd.DataFrame([X_input], columns=columns)
         df_temp.to_csv(file_path, index=False)
 
@@ -43,23 +42,22 @@ def valuepredict(target_price):
         cost = abs(prediction - target_price)
         return cost
 
-    # Считываем путь из файла temp.txt
-    with open('temp.txt', 'r') as file:
-        file_path = file.read().strip()  # Читаем путь и убираем лишние пробелы
 
-    # Загружаем данные и сохраняем исходный X
+    with open('temp.txt', 'r') as file:
+        file_path = file.read().strip()
+
+
     df = pd.read_csv(file_path)
     X = df.values.flatten()
     initial_guess = X
 
-    # Сохраняем X в файл
+
     with open('X_data.pkl', 'wb') as f:
         pickle.dump(X.tolist(), f)
 
-    # Оптимизация
+
     result = minimize(cost_function, initial_guess, method='Nelder-Mead')
 
-    # Сохраняем результат result.x в файл
     with open('result_x.pkl', 'wb') as f:
         pickle.dump(result.x.tolist(), f)
 
