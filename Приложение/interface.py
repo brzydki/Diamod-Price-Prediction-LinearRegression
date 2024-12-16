@@ -74,9 +74,8 @@ class FileInputMenu(BoxLayout):
         self.add_widget(self.back_button)
 
     def update_file_path(self, filechooser, selection):
-        """Обновляет текстовое поле при выборе файла."""
-        if selection and len(selection) > 0:  # Проверяем, что файл выбран
-            self.file_path.text = selection[0]  # Записываем путь к файлу
+        if selection and len(selection) > 0:
+            self.file_path.text = selection[0] 
 
 
 class ResultMenu(BoxLayout):
@@ -95,15 +94,15 @@ class ResultMenu(BoxLayout):
         self.user_price_input = TextInput(hint_text='Введите цену', multiline=False)
         self.add_widget(self.user_price_input)
 
-        # Кнопка "Отправить"
+
         self.submit_button = Button(text='Отправить')
         self.submit_button.bind(
-            on_press=lambda x: process_user_price(self.user_price_input.text))  # Передаем введенную цену
+            on_press=lambda x: process_user_price(self.user_price_input.text))
         self.add_widget(self.submit_button)
 
-        # Кнопка для вывода графика (сейчас затычка)
+
         self.plot_button = Button(text='Вывести график')
-        self.plot_button.bind(on_press=self.plot_placeholder)  # Функция-затычка
+        self.plot_button.bind(on_press=self.plot_placeholder)
         self.add_widget(self.plot_button)
 
         self.back_button = Button(text='Назад')
@@ -188,17 +187,17 @@ class MyApp(App):
         return predict()
 
     def process_user_price(self, user_price):
-        # Проверка на корректность введенной цены
+
         try:
             target_price = float(user_price)
         except ValueError:
             print("Неверно введена цена! Пожалуйста, введите число.")
             return
 
-        # Передаем цену в функцию valuepredict
+
         predicted_values = valuepredict(target_price)
 
-        # Выводим результаты
+
         print(f"Предсказанные параметры для цены {target_price}:")
         for param, value in zip(
                 ["Карат", "Глубина", "Ширина верхней части", "Длина в мм", "Ширина в мм", "Высота в мм"],
@@ -206,7 +205,7 @@ class MyApp(App):
         ):
             print(f"{param}: {value}")
 
-        # Обновляем окно с этими значениями
+
         self.update_result_menu_with_values(predicted_values)
     def process_file(self, file_path):
         if not file_path:
@@ -224,7 +223,7 @@ class MyApp(App):
         except Exception as e:
             print(f"Ошибка при чтении файла: {e}")
     def update_result_menu_with_values(self, values):
-        # Обновляем меню результатами из valuepredict
+
         self.result_menu.clear_widgets()
 
         self.result_menu.add_widget(Label(text='Результаты подбора параметров:'))
